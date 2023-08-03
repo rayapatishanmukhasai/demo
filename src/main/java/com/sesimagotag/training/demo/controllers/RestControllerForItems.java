@@ -47,8 +47,13 @@ public class RestControllerForItems {
      * @return return item with corresponding itemId and reverse its name in the
      *         result.
      */
-    public ResponseEntity<Object> getItemReverse(@RequestParam final int itemId) {
-        return null;
+    @GetMapping(value = "/api/v1/items/{itemId}/reverse")
+    public ResponseEntity<Object> getItemReverse(@PathVariable String itemId) {
+        Item item = itemService.getItemWithReverseName(itemId);
+        if (item == null) {
+            return new ResponseEntity<>("Item not found", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
     /**
@@ -56,9 +61,11 @@ public class RestControllerForItems {
      * 
      * @return all items with reverse name
      */
-    @GetMapping(value = "api/v1/items   /reverse", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "api/v1/items/reverse", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getItemsReverse() {
-        return null;
+        ArrayList<Item> items = itemService.getItems();
+        List<Item> itemsWithReversedName = itemService.getItemsWithReversedName(items);
+        return new ResponseEntity<>(itemsWithReversedName, HttpStatus.OK);
     }
 
     /**
@@ -66,7 +73,8 @@ public class RestControllerForItems {
      */
     @GetMapping(value = "api/v1/items/sort", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Item>> getItemsSort() {
-        return null;
+        List<Item> items = itemService.getItemsInSortedOrder();
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
     /**
@@ -74,7 +82,8 @@ public class RestControllerForItems {
      */
     @GetMapping(value = "api/v1/items", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getItems() {
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<Item> items = itemService.getItems();
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
     /**
