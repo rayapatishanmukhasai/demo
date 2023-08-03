@@ -66,24 +66,32 @@ public class CipherUtil {
 		try {
 			final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
 			final SecretKey secretKey = getKeyFromPassword(EnumEncryptionType.AES_128, new String(INIT_VECTOR), SALT);
-			cipher.init(Cipher.ENCRYPT_MODE, secretKey, initVector);
-			final byte[] cipherText = cipher.doFinal(encryptedMessage);
-			return cipherText;
+			cipher.init(Cipher.DECRYPT_MODE, secretKey, initVector);
+			final byte[] plainText = cipher.doFinal(encryptedMessage);
+			return plainText;
 		} catch (final Exception e) {
-			throw new RuntimeException("Error while encrypting", e);
+			throw new RuntimeException("Error while decrypting", e);
 		}
 	}
 
 	public String encryptAsB64(final String message) throws InvalidKeyException, NoSuchPaddingException,
 			NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, UnsupportedEncodingException,
 			InvalidKeySpecException, InvalidAlgorithmParameterException {
-		return message;
+		byte[] encryptedBytes = encrypt(message.getBytes(UTF_8));
+		return ENCRYPT_B64 + Base64.getEncoder().encodeToString(encryptedBytes);
 	}
 
 	public String decryptAsB64(final String message) throws InvalidKeyException, NoSuchPaddingException,
 			NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, UnsupportedEncodingException,
 			InvalidAlgorithmParameterException {
-		return message;
+		if (message.startsWith(ENCRYPT_B64)) {
+			String encryptedMessage = message.substring(ENCRYPT_B64.length());
+			byte[] encryptedBytes = Base64.getDecoder().decode(encryptedMessage);
+			byte[] decryptedBytes = decrypt(encryptedBytes);
+			return new String(decryptedBytes, UTF_8);
+		} else {
+			throw new IllegalArgumentException("Invalid input format");
+		}
 	}
 
 	private static SecretKey getKeyFromPassword(final EnumEncryptionType encryptionType, final String password,
