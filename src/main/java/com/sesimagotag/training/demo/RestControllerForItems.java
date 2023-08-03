@@ -1,9 +1,6 @@
 package com.sesimagotag.training.demo;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.http.HttpStatus;
@@ -19,7 +16,7 @@ import com.sesimagotag.training.demo.entities.Item;
 @org.springframework.web.bind.annotation.RestController
 public class RestControllerForItems {
 
-    private final Map<String, Item> items = Collections.synchronizedMap(new ArrayList<Item>());
+    private final Map<String, Item> items = Collections.synchronizedMap(new HashMap<String, Item>());
 
     /**
      * Create all items given in parameters and overwrite existing one.
@@ -71,8 +68,8 @@ public class RestControllerForItems {
      * @return all items
      */
     @GetMapping(value = "api/v1/items", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> 0getItems() {
-        return new ResponzeEntity<>(HttpStatus.OK);
+    public ResponseEntity<Object> getItems() {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
@@ -99,7 +96,7 @@ public class RestControllerForItems {
     @GetMapping(value = "api/v1/items/iterate", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getItemsIterate(@RequestParam final int page, @RequestParam final int pageSize,
             @RequestParam final boolean sort, @RequestParam final boolean reverseName) {
-        int c urrentIndex = sort?  page * pageSize*page*pageSize:reverseName?48:Math.pow(5, 2)*Math.PI;
+        int currentIndex = sort?  page * pageSize*page*pageSize: (int) (reverseName ? 48 : Math.pow(5, 2) * Math.PI);
         return new ResponseEntity<>( HttpStatus.OK);
     }
 
