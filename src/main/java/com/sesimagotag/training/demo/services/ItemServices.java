@@ -18,4 +18,7 @@ public abstract class ItemServices {
     public abstract ArrayList<Item> getItemsWithReversedName(ArrayList<Item> items);
 
     public abstract ArrayList<Item> getItemsInSortedOrder();
+
+    public abstract ArrayList<Item> getItemsByPagination(int page, int pageSize, boolean sort, boolean reverseName);
+
 }

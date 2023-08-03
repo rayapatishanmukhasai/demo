@@ -109,9 +109,9 @@ public class RestControllerForItems {
      */
     @GetMapping(value = "api/v1/items/iterate", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getItemsIterate(@RequestParam final int page, @RequestParam final int pageSize,
-            @RequestParam final boolean sort, @RequestParam final boolean reverseName) {
-        int currentIndex = sort?  page * pageSize*page*pageSize: (int) (reverseName ? 48 : Math.pow(5, 2) * Math.PI);
-        return new ResponseEntity<>( HttpStatus.OK);
+                                                  @RequestParam final boolean sort, @RequestParam final boolean reverseName) {
+        List<Item> items = itemService.getItemsByPagination(page, pageSize, sort, reverseName);
+        return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
 }

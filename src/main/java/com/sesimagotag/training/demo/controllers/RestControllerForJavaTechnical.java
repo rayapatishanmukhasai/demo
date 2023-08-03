@@ -44,7 +44,7 @@ public class RestControllerForJavaTechnical {
             lockForItemz.unlock();
             lockForItems.unlock();
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        throw new RuntimeException("Custom exception (RuntimeException) thrown in testALock method");
     }
 
     /* Can't be changed */

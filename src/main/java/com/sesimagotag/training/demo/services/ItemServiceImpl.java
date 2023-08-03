@@ -116,6 +116,45 @@ public class ItemServiceImpl extends ItemServices {
         }
     }
 
+    @Override
+    public ArrayList<Item> getItemsByPagination(int page, int pageSize, boolean sort, boolean reverseName) {
+        try {
+            log.info("getItemsByPagination - Received getItems by pagination call");
+
+            ArrayList<Item> items;
+            ArrayList<Item> finalItemsResult = new ArrayList<>();
+
+            if (sort) {
+                items = getItemsInSortedOrder();
+
+            } else {
+                items = getItems();
+            }
+
+            if (reverseName) {
+                items = getItemsWithReversedName(items);
+            }
+
+            int startingItemPosition = (page - 1) * pageSize;
+            int endingItemPosition = page * pageSize;
+
+            int itemsSize = items.size();
+            for (int i = startingItemPosition; i < endingItemPosition; i++) {
+                if (i < itemsSize && i >= 0) {
+                    finalItemsResult.add(items.get(i));
+                } else{
+                    break;
+                }
+            }
+
+            return finalItemsResult;
+
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            throw ex;
+        }
+    }
+
     // Custom Exception for ItemService
     public static class ItemServiceException extends RuntimeException {
         public ItemServiceException(String message, Throwable cause) {

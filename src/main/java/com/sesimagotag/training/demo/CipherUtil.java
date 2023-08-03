@@ -63,7 +63,15 @@ public class CipherUtil {
 	}
 
 	public byte[] decrypt(byte[] encryptedMessage) {
-		return encryptedMessage;
+		try {
+			final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+			final SecretKey secretKey = getKeyFromPassword(EnumEncryptionType.AES_128, new String(INIT_VECTOR), SALT);
+			cipher.init(Cipher.ENCRYPT_MODE, secretKey, initVector);
+			final byte[] cipherText = cipher.doFinal(encryptedMessage);
+			return cipherText;
+		} catch (final Exception e) {
+			throw new RuntimeException("Error while encrypting", e);
+		}
 	}
 
 	public String encryptAsB64(final String message) throws InvalidKeyException, NoSuchPaddingException,
