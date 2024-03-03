@@ -1,8 +1,6 @@
 package com.sesimagotag.training.demo.controllers;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.sesimagotag.training.demo.services.ItemServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,8 +11,6 @@ import com.sesimagotag.training.demo.entities.Item;
 
 @RestController
 public class RestControllerForItems {
-
-    private final Map<String, Item> items = Collections.synchronizedMap(new HashMap<String, Item>());
 
     private final ItemServiceImpl itemService = new ItemServiceImpl();
 

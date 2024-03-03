@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.sesimagotag.training.demo.entities.Item;
+import org.springframework.web.bind.annotation.RestController;
 
-@org.springframework.web.bind.annotation.RestController
+@RestController
 public class RestControllerForJavaTechnical {
 
     /* Can't be changed */
@@ -56,17 +57,17 @@ public class RestControllerForJavaTechnical {
         // You must implement something to guarantee that target int will be increment
         // once
         /* Can't be changed */
-        int i = mapOfInts.getOrDefault(intId, Integer.valueOf(0));
-        Thread.sleep(i * 5000l);
-        int checkBadly = mapOfInts.getOrDefault(intId, Integer.valueOf(0));
+        int i = mapOfInts.getOrDefault(intId, 0);
+        Thread.sleep(i * 5000L);
+        int checkBadly = mapOfInts.getOrDefault(intId, 0);
         if (checkBadly != i) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         i++;
-        mapOfInts.put(intId, Integer.valueOf(i));
+        mapOfInts.put(intId, i);
         /* End can't be changed */
 
-        return new ResponseEntity<>(Integer.valueOf(i), HttpStatus.OK);
+        return new ResponseEntity<>(i, HttpStatus.OK);
     }
 
 }
